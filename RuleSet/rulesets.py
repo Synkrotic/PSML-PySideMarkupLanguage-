@@ -1,5 +1,7 @@
 from PySide6.QtWidgets import QApplication, QWidget, QPushButton, QLabel, QVBoxLayout, QHBoxLayout, QGroupBox
 
+
+
 elementTypes = [
     "root",
 
@@ -17,10 +19,13 @@ elementTypes = [
 ]
 
 psml_widgets = {
-    "cont": QGroupBox,
-    "container": QGroupBox,
+    "root": QWidget,
+
+    "cont": QWidget,
+    "container": QWidget,
     "node": QWidget,
     "nd": QWidget,
+    "box": QWidget,
 
     "btn": QPushButton,
     "button": QPushButton,

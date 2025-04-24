@@ -1,7 +1,6 @@
 <node>
-    <btn class="btnClass-1" id="btnID-1" onclick="openMenu()">Click me!</btn>
-    <lbl>Beans</lbl>
+    <btn id="button" onclick="print('I like turtles!')">Click me!</btn>
+    <lbl class="label100">Beans</lbl>
 </node>
-<btn>
-    <lbl>bread</lbl>
-</btn>
+<btn>Button</btn>
+<lbl>Label</lbl>
