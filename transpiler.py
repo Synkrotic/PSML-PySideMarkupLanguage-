@@ -1,5 +1,8 @@
+import os
 from PySide6.QtWidgets import QApplication, QWidget, QPushButton, QLabel, QVBoxLayout, QHBoxLayout, QGroupBox
 from RuleSet.rulesets import elementTypes, psml_widgets
+from PySide6.QtWebEngineWidgets import QWebEngineView
+from PySide6.QtCore import QUrl
 import xml.etree.ElementTree as ET
 
 
@@ -35,6 +38,7 @@ class PSMLElement:
                 child_widget = child.load(self)
                 if child_widget is not None:
                     self.widget.addWidget(child_widget)
+            self.setAttributes()
             return self.widget
 
         pyside_widget = psml_widgets.get(self.tag)
@@ -71,6 +75,15 @@ class PSMLElement:
                     self.widget.clicked.connect(lambda: eval(value))
                 else:
                     raise ValueError(f"onclick attribute is only valid for QPushButton widgets | Not for {self.tag}")
+            # elif "url" in attr or "src" in attr:
+            #     if isinstance(self.widget, QWebEngineView):
+            #         try:
+            #             url = QUrl.fromLocalFile(os.path.abspath(value))
+            #             self.widget.load(url)
+            #         except Exception as e:
+            #             raise ValueError(f"Invalid URL: {value}. Error: {e}")
+            #     else:
+            #         raise ValueError(f"url/src attribute is only valid for QWebEngineView widgets | Not for {self.tag}")
             self.widget.setProperty(attr, value)
 
 
@@ -118,7 +131,7 @@ class Transpiler:
     def getStringStructure(self, containerElement, indent=0) -> str:
         if containerElement is None:
             raise ValueError(f"{containerElement.tag} element is not set.")
-        result = f"{"  " * indent} => {containerElement.tag}\n"
+        result = f"{"  " * indent} => {containerElement.tag} | {containerElement.attributes.get("id") or ""} | {containerElement.attributes.get("class") or ""}\n"
         for child in containerElement.children:
             result += self.getStringStructure(child, indent + 1)
         return result
@@ -139,9 +152,3 @@ class Transpiler:
         
         self.generatePSElements(self.root)
         print(self.getStringStructure(self.root))
-
-
-
-# if __name__ == "__main__":
-#     piler: Transpiler = Transpiler()
-#     piler.run('main.psml')

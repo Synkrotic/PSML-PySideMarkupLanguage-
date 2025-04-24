@@ -1,6 +1,4 @@
-<node>
-    <btn id="button" onclick="print('I like turtles!')">Click me!</btn>
-    <lbl class="label100">Beans</lbl>
-</node>
-<btn>Button</btn>
-<lbl>Label</lbl>
+<root id="root">
+    <btn id="close_button" onclick="print('hello world!')">X</btn>
+    <lbl>Hello world!</lbl>
+</root>

@@ -1,6 +1,8 @@
 from PySide6.QtWidgets import QApplication, QWidget, QPushButton, QLabel, QVBoxLayout, QHBoxLayout, QGroupBox
 from transpiler import Transpiler
-import sys
+import sys, os
+
+os.environ["QTWEBENGINE_CHROMIUM_FLAGS"] = "--disable-gpu --disable-software-rasterizer"
 
 
 
@@ -10,13 +12,28 @@ class MyWindow(QWidget):
         self.setWindowTitle("Nested Layout Example")
         self.transpiler = Transpiler()
         self.transpiler.run('main.psml')
-        self.setGeometry(1500, 750, 100, 300)
+        self.centerWindow()
+        self.fullscreenWindow()
+        self.setObjectName("main_window")
 
         if self.transpiler.root is None:
             raise ValueError("Root element not found in the PSML file.")
 
         self.setLayout(self.transpiler.root.load(None))
-        loadStyleSheet("style.qss")
+        self.setStyleSheet(loadStyleSheet("style.qss"))
+
+    def centerWindow(self):
+        screen = app.primaryScreen()
+        screenGeometry = screen.availableGeometry()
+        x = (screenGeometry.width() - self.width()) // 2
+        y = (screenGeometry.height() - self.height()) // 2
+        self.move(x, y)
+
+    def fullscreenWindow(self):
+        screen = app.primaryScreen()
+        screenGeometry = screen.availableGeometry()
+        self.setGeometry(screenGeometry)
+        self.showFullScreen()
 
 
 
@@ -29,7 +46,7 @@ def loadStyleSheet(filePath) -> None:
 
     with open(filePath, "r") as file:
         style = file.read()
-    app.setStyleSheet(style)
+    return style
 
 
 

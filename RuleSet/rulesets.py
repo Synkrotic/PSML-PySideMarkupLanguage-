@@ -1,4 +1,5 @@
-from PySide6.QtWidgets import QApplication, QWidget, QPushButton, QLabel, QVBoxLayout, QHBoxLayout, QGroupBox
+from PySide6.QtWidgets import QWidget, QPushButton, QLabel
+from PySide6.QtWebEngineWidgets import QWebEngineView
 
 
 
@@ -7,7 +8,6 @@ elementTypes = [
 
     "cont",
     "container",
-
     "node",
     "nd",
 
@@ -16,6 +16,11 @@ elementTypes = [
 
     "lbl",
     "label",
+
+    #TODO Work in progress
+    "loader",
+    "webview",
+    "embed",
 ]
 
 psml_widgets = {
@@ -32,4 +37,9 @@ psml_widgets = {
 
     "lbl": QLabel,
     "label": QLabel,
+
+    #TODO Work in progress
+    "loader": QWebEngineView,
+    "webview": QWebEngineView,
+    "embed": QWebEngineView,
 }

@@ -1,0 +1,9 @@
+QWidget#main_window {
+    background-color: #fff;
+}
+
+QPushButton#close_button {
+    height: 50px;
+    width: 50px;
+    background-color: green;
+}
