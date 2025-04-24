@@ -1,0 +1,7 @@
+<node>
+    <btn class="btnClass-1" id="btnID-1" onclick="openMenu()">Click me!</btn>
+    <lbl>Beans</lbl>
+</node>
+<btn>
+    <lbl>bread</lbl>
+</btn>
