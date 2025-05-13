@@ -1,57 +1,64 @@
-from PySide6.QtWidgets import QApplication, QWidget, QPushButton, QLabel, QVBoxLayout, QHBoxLayout, QGroupBox
+from PySide6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QSizePolicy, QLabel, QScrollArea, QDialog
+from PySide6.QtCore import QTimer, Qt
+from software_actions.button_actions import *
+from transpileQSS import loadStyleSheet
 from transpiler import Transpiler
-import sys, os
-
-os.environ["QTWEBENGINE_CHROMIUM_FLAGS"] = "--disable-gpu --disable-software-rasterizer"
+import globals, sys, os
 
 
-
-class MyWindow(QWidget):
+class Window(QWidget):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("Nested Layout Example")
-        self.transpiler = Transpiler()
-        self.transpiler.run('main.psml')
+        self.setWindowTitle("PDF Sorter")
+        self.setObjectName("main_window")
+        self.screen = globals.app.primaryScreen()
+        self.screenGeometry = self.screen.geometry()
         self.centerWindow()
         self.fullscreenWindow()
-        self.setObjectName("main_window")
 
-        if self.transpiler.root is None:
+        globals.transpiler = Transpiler()
+
+        pageText = ""
+        template_folder = os.path.join(os.path.dirname(__file__), "templates")
+        for filename in os.listdir(template_folder):
+            filepath = os.path.join(template_folder, filename)
+            if os.path.isfile(filepath) and filename.endswith(".psml"):
+                pageText += f"{globals.transpiler.readPSML(filename)}\n"
+                
+
+        globals.transpiler.run(pageText=pageText)
+        if globals.transpiler.root is None:
             raise ValueError("Root element not found in the PSML file.")
 
-        self.setLayout(self.transpiler.root.load(None))
-        self.setStyleSheet(loadStyleSheet("style.qss"))
+        layout = globals.transpiler.root.load().widget
+        self.setLayout(layout)
+
+        print(globals.transpiler.getStringStructure(globals.transpiler.root))
+        self.setStyling()
+
 
     def centerWindow(self):
-        screen = app.primaryScreen()
-        screenGeometry = screen.availableGeometry()
-        x = (screenGeometry.width() - self.width()) // 2
-        y = (screenGeometry.height() - self.height()) // 2
+        x = (self.screenGeometry.width() - self.width()) // 2
+        y = (self.screenGeometry.height() - self.height()) // 2
         self.move(x, y)
 
+
     def fullscreenWindow(self):
-        screen = app.primaryScreen()
-        screenGeometry = screen.availableGeometry()
-        self.setGeometry(screenGeometry)
-        self.showFullScreen()
+        self.setGeometry(self.screenGeometry)
+        if globals.fullscreen: self.showFullScreen()
+
+    
+    def setStyling(self):
+        self.style = loadStyleSheet("style.qss")
+        self.setStyleSheet(self.style)
+        for dialog in globals.transpiler.dialogs:
+            dialog.widget.setStyleSheet(self.style)
 
 
-
-def loadStyleSheet(filePath) -> None:
-    if filePath is None:
-        return;
-
-    if not "styling/" in filePath:
-        filePath = "styling/" + filePath
-
-    with open(filePath, "r") as file:
-        style = file.read()
-    return style
 
 
 
 if __name__ == "__main__":
-    app = QApplication(sys.argv)
-    window = MyWindow()
-    window.show()
-    sys.exit(app.exec())
+    globals.window = Window()
+    globals.window.show()
+    sys.exit(globals.app.exec())

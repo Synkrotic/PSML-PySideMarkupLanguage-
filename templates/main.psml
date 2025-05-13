@@ -1,4 +1,2 @@
-<root id="root">
-    <btn id="close_button" onclick="print('hello world!')">X</btn>
-    <lbl>Hello world!</lbl>
-</root>
+<btn id="close_button" onclick="print('hello world!')">X</btn>
+<lbl>Hello world!</lbl>
