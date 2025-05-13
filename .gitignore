@@ -2,5 +2,7 @@
 /include/
 /lib/*
 /lib64/*
+/__pycache__/
+/software_actions/__pycache__/
 lib64
 pyvenv.cfg

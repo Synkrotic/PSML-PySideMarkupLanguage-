@@ -1,6 +1,5 @@
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QSizePolicy, QLabel, QScrollArea, QDialog
 from PySide6.QtCore import QTimer, Qt
-from software_actions.button_actions import *
 from transpileQSS import loadStyleSheet
 from transpiler import Transpiler
 import globals, sys, os

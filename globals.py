@@ -12,10 +12,3 @@ config.read("config.cfg")
 # Config
 export = config.getboolean("Settings", "export")
 fullscreen = config.getboolean("Settings", "fullscreen")
-allowSubFolders = config.getboolean("Settings", "allowSubFolders")
-
-selectedPDF = config.get("Settings", "selectedPDF")
-selectedFolder = config.get("Settings", "selectedFolder")
-
-inputDirectory = config.get("Settings", "inputDirectory")
-outputDirectory = config.get("Settings", "outputDirectory")

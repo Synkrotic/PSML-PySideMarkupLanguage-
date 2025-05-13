@@ -1,6 +1,5 @@
 from PySide6.QtWidgets import QWidget, QPushButton, QLabel, QVBoxLayout, QHBoxLayout, QScrollArea, QSizePolicy, QDialog
 from PySide6.QtCore import QTimer, Qt
-from software_actions.button_actions import *
 from RuleSet.rulesets import psml_widgets
 import xml.etree.ElementTree as ET, uuid, globals, threading
 
